@@ -1,3 +1,4 @@
+const mysql = require('mysql2/promise');
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
@@ -85,7 +86,49 @@ app.post('/saveFeedbackToFile', async (request,response) => {
 
   feedbacksJson.push(newFeedback);
   await fs.writeFile(feedbackPath, JSON.stringify(feedbacksJson))
-  response.send("Feedback has been stored");
+  response.send("Feedback has been stored to file");
+});
+
+// save feedback to mysql
+// do additional task to retrieve feedback => teach dangers of sqlinjection
+app.post('/saveFeedbackToDb', async (request,response) => {
+  // get information from html form
+  const {mail, feedbackText} = request.body;
+
+  // establish database connection
+  var connection = await mysql.createConnection({
+    host: "127.0.0.1",
+    user: "root",
+    password: "my-secret-pw",
+    database: "NodeIntro"
+  });
+  
+  // save to database
+  const [rows,fields] = await connection.execute('INSERT INTO feedback (email,feedback) VALUES (?,?)',[mail,feedbackText]);
+
+  // send response back
+  response.send("Feedback has been stored to database");
+});
+
+// Endpoint that shows 10 most recent feedbacks
+app.get('/showRecentFeedback', async (request,response) => {
+  // establish database connection
+  var connection = await mysql.createConnection({
+    host: "127.0.0.1",
+    user: "root",
+    password: "my-secret-pw",
+    database: "NodeIntro"
+  });
+
+  // save to database
+  const [rows,fields] = await connection.execute('SELECT feedback FROM feedbacks ORDER BY created_at DESC LIMIT 3');
+
+  // extract feedback from each row and put in a list item
+  const listRecentFeedback = rows.map(row => `<li> ${row.feedback} </li>`)
+                                 .join("");
+
+  // send response back
+  response.send(listRecentFeedback);
 });
 
 // irgendwas mit url parameters

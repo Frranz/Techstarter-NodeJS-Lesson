@@ -6,3 +6,5 @@
 - Auslagern von DB Funktionen
 - Einheitliche Anführungszeichen
 - package.json aufräumen
+- use express intern body-parser
+- maybe Bonusübung mit http://www.omdbapi.com

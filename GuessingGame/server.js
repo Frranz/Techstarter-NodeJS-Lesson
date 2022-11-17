@@ -20,11 +20,11 @@ const port = 3000;
     const secretNumber = 5;
   
     // check if the number is correct and set result message accordingly
-    let result = "";
+    let result = '';
     if (number === secretNumber) {
-      result = "richtig. Herzlichen Glückwunsch";
+      result = 'richtig. Herzlichen Glückwunsch';
     } else {
-      result = "falsch. Versuch es noch einmal";
+      result = 'falsch. Versuch es noch einmal';
     }
   
     // concatenate response message

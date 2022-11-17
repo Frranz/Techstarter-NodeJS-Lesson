@@ -23,13 +23,13 @@ app.get('/', (request, response) => {
 
 // send HTML file with feedback form
 app.get('/feedback', (request,response) => {
-  response.sendFile(__dirname + "/index.html");
+  response.sendFile(__dirname + '/index.html');
 });
 
 // Endpoint that receives Feedback from form and stores it into a json file
 app.post('/saveFeedbackToFile', async (request,response) => {
   // define path for json file
-  feedbackPath = __dirname + "/feedbacks.json"
+  feedbackPath = __dirname + '/feedbacks.json'
 
   // get information from html form
   const {mail, feedbackText} = request.body;
@@ -54,7 +54,7 @@ app.post('/saveFeedbackToFile', async (request,response) => {
   await fs.writeFile(feedbackPath, JSON.stringify(feedbacksJson))
   
   // send response to user
-  response.send("Feedback has been stored to file");
+  response.send('Feedback has been stored to file');
 });
 
 // Endpoint that receives Feedback from form and stores it into a json file
@@ -64,27 +64,27 @@ app.post('/saveFeedbackToDb', async (request,response) => {
 
   // establish database connection
   var connection = await mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "my-secret-pw",
-    database: "NodeIntro"
+    host: '127.0.0.1',
+    user: 'root',
+    password: 'my-secret-pw',
+    database: 'NodeIntro'
   });
   
   // save to database
   const [rows,fields] = await connection.execute('INSERT INTO feedbacks (email,feedback) VALUES (?,?)',[mail,feedbackText]);
 
   // send response to user
-  response.send("Feedback has been stored to database");
+  response.send('Feedback has been stored to database');
 });
 
 // Endpoint that shows 10 most recent feedbacks
 app.get('/showRecentFeedback', async (request,response) => {
   // establish database connection
   var connection = await mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "my-secret-pw",
-    database: "NodeIntro"
+    host: '127.0.0.1',
+    user: 'root',
+    password: 'my-secret-pw',
+    database: 'NodeIntro'
   });
 
   // request recent feedback from database
@@ -92,7 +92,7 @@ app.get('/showRecentFeedback', async (request,response) => {
 
   // extract feedback from each row and put in a list item
   const listRecentFeedback = rows.map(row => `<li> ${row.feedback} </li>`)
-                                 .join("");
+                                 .join('');
 
   // send feedback back to user
   response.send(listRecentFeedback);

@@ -10,21 +10,22 @@ const port = 3000;
 //Requests a random fact about cats from catfact.ninja and sends it to the user
 app.get('/catFact', async (request,response) => {
     // make http GET request to catfact.ninja
-    const httpResponse = await fetch('https://catfact.ninja/fact', {
+    const httpResponse = fetch('https://catfact.ninja/fact', {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
     });
 
-    // check if request was successful
-    if (httpResponse.status !== 200) {
+    // check if http status code is 200 (ok)
+    if (httpResponse.statusCode === 200) {
+        // convert http response (string) to json
+        const json = await httpResponse.json();
+    
+        // send back only the cat fact
+        response.send(json.fact)
+    } else {
         response.send('Fehler beim abrufen der CatFacts');
     }
 
-    // convert http response (string) to json
-    const json = await httpResponse.json();
-
-    // send back only the cat fact
-    response.send(json.fact)
 });
 
 // make server listen to specific port

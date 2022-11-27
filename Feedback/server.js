@@ -80,7 +80,7 @@ app.post('/saveFeedbackToDb', async (request,response) => {
 // Endpoint that shows 10 most recent feedbacks
 app.get('/showRecentFeedback', async (request,response) => {
   // establish database connection
-  var connection = await mysql.createConnection({
+  const connection = await mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
     password: 'my-secret-pw',

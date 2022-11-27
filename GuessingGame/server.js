@@ -14,7 +14,7 @@ const port = 3000;
  */
  app.get('/guessingGame', async (request,response) => {
     // retrieve URL parameters
-    let {name, number}  = request.query;
+    const {name, number}  = request.query;
   
     // define secret number
     const secretNumber = 5;
